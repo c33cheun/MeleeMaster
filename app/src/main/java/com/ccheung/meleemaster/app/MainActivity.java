@@ -1,8 +1,11 @@
 package com.ccheung.meleemaster.app;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,13 +13,34 @@ import android.widget.EdgeEffect;
 import android.widget.EditText;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
     public final static String SEARCH_STRING = "com.ccheung.meleemaster.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Check that the activity is using the layout version with
+        // the fragment_container FrameLayout
+        if (findViewById(R.id.fragment_container) != null) {
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
+            }
+
+            // Create a new Fragment to be placed in the activity layout
+            HeadlinesFragment firstFragment = new HeadlinesFragment();
+
+            // In case this activity was started with special instructions from an
+            // Intent, pass the Intent's extras to the fragment as arguments
+            firstFragment.setArguments(getIntent().getExtras());
+
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
+        }
     }
 
 
@@ -50,5 +74,23 @@ public class MainActivity extends Activity {
         String message = editText.getText().toString();
         intent.putExtra(SEARCH_STRING, message);
         startActivity(intent);
+    }
+
+    /** called to change fragment on main activity Frame layout **/
+    public void changeFragment(View view) {
+        // Create fragment and give it an argument specifying the article it should show
+        ArticleFragment newFragment = new ArticleFragment();
+        Bundle args = new Bundle();
+        newFragment.setArguments(args);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 }

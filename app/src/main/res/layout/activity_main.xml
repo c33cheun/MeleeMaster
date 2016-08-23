@@ -5,16 +5,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
         <EditText android:id="@+id/edit_message"
-                  android:layout_weight="1"
-                  android:layout_width="0dp"
+                  android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
+                  android:layout_gravity="start"
                   android:hint="@string/edit_message" />
-        <Button
-            android:layout_width="wrap_content"
+        <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_send"
+                android:layout_gravity="right"
             android:onClick="sendMessage"/>
+        </FrameLayout>
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="bottom"
+                android:text="@string/button_change_fragment"
+                android:onClick="changeFragment"/>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 android:id="@+id/fragment_container"
+                 android:layout_weight="7"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent" />
 </LinearLayout>
         <!--&lt;!&ndash; A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. &ndash;&gt;-->
         <!--<android.support.v4.widget.DrawerLayout-->
